@@ -1,0 +1,752 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projeto FAROL</title>
+<meta name="description" content="Projeto FAROL — Fortalecimento, Acolhimento e Rede de Orientação e Proteção à Liberdade de Crianças e Adolescentes. Iniciativa de prevenção, orientação e proteção nos ambientes escolar e digital.">
+<meta name="theme-color" content="#11324D">
+<link rel="icon" href="assets/icon-navy.svg" type="image/svg+xml">
+<meta property="og:title" content="Projeto FAROL">
+<meta property="og:description" content="Informação que ilumina caminhos de proteção para crianças e adolescentes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#11324D; --navy-900:#0B2238; --navy-700:#1A4566;
+  --steel:#6B88A6; --ice:#E6ECF2; --gold:#D4AF37; --gold-600:#B8942A; --cream:#F3E7CA;
+  --paper:#FBF8F1; --ink:#14273A; --muted:#51657A; --line:#D9E1EA; --white:#fff;
+  --radius:18px; --shadow:0 18px 40px -22px rgba(11,34,56,.45);
+  --display:'Marcellus', Georgia, serif; --sans:'Poppins', system-ui, -apple-system, Segoe UI, sans-serif;
+  --wrap:1180px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--paper);font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.15;margin:0;color:var(--navy);letter-spacing:.01em}
+h2{font-size:clamp(2rem,4.2vw,3rem)}
+h3{font-size:1.35rem}
+p{margin:0 0 1em}
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 24px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:6px}
+
+/* ---------- emergency bar ---------- */
+.alert{background:var(--navy-900);color:var(--cream);font-size:.82rem;text-align:center;padding:8px 16px;line-height:1.5}
+.alert strong{color:var(--gold);font-weight:600}
+.alert a{color:#fff;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(212,175,55,.6);white-space:nowrap}
+
+/* ---------- header ---------- */
+header.site{position:sticky;top:0;z-index:50;background:rgba(17,50,77,.97);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:76px;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand img{height:44px;width:auto}
+.brand .word{height:30px}
+.menu{display:flex;gap:4px;align-items:center;list-style:none;margin:0;padding:0}
+.menu a{color:#E6ECF2;text-decoration:none;font-size:.88rem;font-weight:500;padding:8px 12px;border-radius:999px;transition:background .2s,color .2s}
+.menu a:hover{background:rgba(255,255,255,.08);color:#fff}
+.menu .cta{background:var(--gold);color:var(--navy-900);font-weight:600;margin-left:8px}
+.menu .cta:hover{background:#E2C25A;color:var(--navy-900)}
+.burger{display:none;background:none;border:0;color:#fff;width:44px;height:44px;cursor:pointer;border-radius:10px}
+.burger span{display:block;width:22px;height:2px;background:currentColor;margin:5px auto;transition:transform .25s,opacity .25s}
+@media (max-width:980px){
+  .burger{display:block}
+  .menu{position:fixed;inset:76px 0 auto 0;flex-direction:column;align-items:stretch;background:var(--navy);padding:12px 20px 24px;gap:2px;transform:translateY(-12px);opacity:0;pointer-events:none;transition:.25s;box-shadow:0 20px 30px rgba(0,0,0,.25)}
+  .menu a{display:block;padding:14px 12px;font-size:1rem;border-radius:12px}
+  .menu .cta{margin:10px 0 0;text-align:center}
+  body.open .menu{transform:none;opacity:1;pointer-events:auto}
+  body.open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  body.open .burger span:nth-child(2){opacity:0}
+  body.open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+}
+
+/* ---------- buttons / chips ---------- */
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--sans);font-weight:600;font-size:.95rem;padding:14px 24px;border-radius:999px;text-decoration:none;border:2px solid transparent;transition:transform .2s,background .2s,border-color .2s,color .2s;cursor:pointer}
+.btn:hover{transform:translateY(-2px)}
+.btn-gold{background:var(--gold);color:var(--navy-900)}
+.btn-gold:hover{background:#E2C25A}
+.btn-ghost{border-color:rgba(255,255,255,.45);color:#fff}
+.btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
+.btn-navy{background:var(--navy);color:#fff}
+.btn-navy:hover{background:var(--navy-700)}
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-600);margin-bottom:18px}
+.eyebrow svg{width:14px;height:14px;fill:var(--gold)}
+.on-dark .eyebrow{color:var(--gold)}
+.lead{font-size:1.1rem;color:var(--muted);max-width:62ch}
+
+/* ---------- hero ---------- */
+.hero{position:relative;background:radial-gradient(1200px 600px at 75% 30%,#1C4A6E 0%,var(--navy) 45%,var(--navy-900) 100%);color:#fff;overflow:hidden;padding:72px 0 150px}
+.hero .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;position:relative;z-index:2}
+.hero h1{color:#fff;font-size:clamp(2.4rem,5.6vw,4.3rem);margin-bottom:22px}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero p.sub{color:#C9D6E3;font-size:1.12rem;max-width:56ch;margin-bottom:34px}
+.hero .actions{display:flex;flex-wrap:wrap;gap:14px}
+.acronym{margin-top:44px;display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.82rem;color:#AFC2D6;letter-spacing:.04em}
+.acronym b{color:var(--gold);font-family:var(--display);font-size:1.15rem;font-weight:400;margin-right:2px}
+.beacon{position:relative;aspect-ratio:1;max-width:460px;margin-left:auto;width:100%;display:grid;place-items:center}
+.beacon::before{content:"";position:absolute;inset:-30%;background:conic-gradient(from 0deg,transparent 0 300deg,rgba(212,175,55,.0) 300deg,rgba(212,175,55,.28) 330deg,rgba(243,231,202,.05) 360deg);border-radius:50%;animation:sweep 9s linear infinite;mask:radial-gradient(circle,#000 30%,transparent 70%);-webkit-mask:radial-gradient(circle,#000 30%,transparent 70%)}
+.beacon::after{content:"";position:absolute;width:62%;height:62%;border-radius:50%;background:radial-gradient(circle,rgba(212,175,55,.22),transparent 65%)}
+.beacon img{position:relative;z-index:2;width:58%;filter:drop-shadow(0 20px 40px rgba(0,0,0,.35))}
+.rays{position:absolute;inset:0;z-index:1;opacity:.5}
+@keyframes sweep{to{transform:rotate(360deg)}}
+.stars span{position:absolute;width:14px;height:14px;opacity:.85}
+.stars svg{width:100%;height:100%;fill:var(--gold)}
+.wave{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:120px;z-index:3}
+@media (max-width:860px){
+  .hero{padding:48px 0 120px}
+  .hero .grid{grid-template-columns:1fr}
+  .beacon{max-width:300px;margin:0 auto;order:-1}
+}
+
+/* ---------- strip ---------- */
+.strip{background:var(--paper);padding:8px 0 0}
+.strip .wrap{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;font-size:.85rem;color:var(--muted);text-align:center}
+.strip b{color:var(--navy);font-weight:600}
+
+/* ---------- sections ---------- */
+section{padding:110px 0;position:relative}
+.head{max-width:760px;margin-bottom:56px}
+.head.center{margin-left:auto;margin-right:auto;text-align:center}
+.head.center .lead{margin-left:auto;margin-right:auto}
+.head h2{margin-bottom:18px}
+.swoosh{display:block;width:140px;height:14px;margin:14px 0 22px}
+.head.center .swoosh{margin-left:auto;margin-right:auto}
+
+/* about */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.about .quote{font-family:var(--display);font-size:clamp(1.5rem,2.6vw,2rem);line-height:1.35;color:var(--navy);border-left:3px solid var(--gold);padding-left:24px;margin:8px 0 28px}
+.golden{display:grid;gap:16px}
+.golden article{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px 28px;display:grid;grid-template-columns:auto 1fr;gap:6px 20px;box-shadow:var(--shadow)}
+.golden .tag{grid-row:span 2;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;text-align:center;font-family:var(--display);font-size:1rem;line-height:1.1;background:var(--ice);color:var(--navy)}
+.golden article:nth-child(1) .tag{background:var(--gold);color:var(--navy-900)}
+.golden article:nth-child(2) .tag{background:var(--navy);color:#fff}
+.golden h3{font-size:1.2rem}
+.golden p{margin:0;color:var(--muted);font-size:.95rem}
+@media (max-width:860px){.about{grid-template-columns:1fr;gap:36px}}
+
+/* concepts */
+.concepts{background:var(--ice)}
+.letters{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+.letter{background:#fff;border-radius:var(--radius);padding:30px 22px 28px;position:relative;overflow:hidden;border:1px solid #D3DDE8;transition:transform .25s,box-shadow .25s}
+.letter:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.letter .big{font-family:var(--display);font-size:4.2rem;line-height:1;color:var(--navy);display:block;margin-bottom:12px}
+.letter:nth-child(odd) .big{color:var(--gold-600)}
+.letter h3{font-family:var(--sans);font-weight:600;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--navy);margin-bottom:10px}
+.letter p{font-size:.9rem;color:var(--muted);margin:0}
+.letter::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--gold),var(--cream))}
+@media (max-width:1020px){.letters{grid-template-columns:repeat(2,1fr)}.letter:last-child{grid-column:span 2}}
+@media (max-width:560px){.letters{grid-template-columns:1fr}.letter:last-child{grid-column:auto}}
+
+/* context / stats */
+.context{background:var(--navy);color:#fff;overflow:hidden}
+.context h2,.context h3{color:#fff}
+.context .lead{color:#B9C9D9}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.stat{border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.03);border-radius:var(--radius);padding:28px 24px;display:flex;flex-direction:column}
+.stat .num{font-family:var(--display);font-size:clamp(2.2rem,3.6vw,3rem);color:var(--gold);line-height:1;margin-bottom:12px}
+.stat p{color:#DCE5EE;font-size:.95rem;margin-bottom:16px}
+.stat small{margin-top:auto;color:#8FA6BD;font-size:.74rem;line-height:1.5;border-top:1px solid rgba(255,255,255,.1);padding-top:12px}
+.note{margin-top:28px;font-size:.85rem;color:#9FB3C8;max-width:80ch;display:flex;gap:12px}
+.note svg{flex:none;width:18px;height:18px;margin-top:3px;fill:var(--gold)}
+.context .rays-bg{position:absolute;right:-200px;top:-120px;width:700px;opacity:.06;pointer-events:none}
+@media (max-width:1020px){.stats{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.stats{grid-template-columns:1fr}}
+
+/* fronts */
+.fronts{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.front{border-radius:24px;padding:44px 40px;position:relative;overflow:hidden}
+.front.escola{background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+.front.digital{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-900) 100%);color:#fff}
+.front.digital h3,.front.digital .kicker{color:#fff}
+.front .kicker{font-family:var(--sans);font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;font-weight:600;color:var(--gold-600);margin-bottom:10px;display:block}
+.front.digital .kicker{color:var(--gold)}
+.front h3{font-size:clamp(1.8rem,3vw,2.3rem);margin-bottom:16px}
+.front p{color:var(--muted)}
+.front.digital p{color:#C3D1DF}
+.front ul{list-style:none;padding:0;margin:22px 0 0;display:grid;gap:12px}
+.front li{display:flex;gap:12px;font-size:.95rem;align-items:flex-start}
+.front li svg{flex:none;width:16px;height:16px;margin-top:5px;fill:var(--gold)}
+.front .icon{position:absolute;right:-30px;top:-30px;width:180px;opacity:.07}
+.front.digital .icon{opacity:.1}
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px}
+.tool{background:var(--cream);border-radius:var(--radius);padding:24px 24px 22px}
+.tool b{font-family:var(--display);font-weight:400;font-size:1.15rem;color:var(--navy);display:block;margin-bottom:6px;letter-spacing:.03em}
+.tool p{margin:0;font-size:.9rem;color:#5B5340}
+@media (max-width:900px){.fronts,.tools{grid-template-columns:1fr}.front{padding:34px 26px}}
+
+/* guidance */
+.guide{background:var(--paper)}
+.principle-banner{background:var(--navy);color:#fff;border-radius:24px;padding:34px 40px;display:flex;align-items:center;gap:28px;margin-bottom:28px;position:relative;overflow:hidden}
+.principle-banner .mark{font-family:var(--display);font-size:clamp(1.6rem,3vw,2.3rem);color:var(--gold);line-height:1.2;flex:none}
+.principle-banner p{margin:0;color:#C9D6E3;max-width:70ch}
+.dodont{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px}
+.card h3{display:flex;align-items:center;gap:12px;margin-bottom:18px;font-size:1.3rem}
+.card h3 .ic{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;flex:none}
+.card.do h3 .ic{background:#E5EFE6;color:#2F6B3A}
+.card.dont h3 .ic{background:#F7E6E2;color:#9A3B2A}
+.card ul{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.card li{position:relative;padding-left:22px;font-size:.95rem;color:#34495E}
+.card li::before{content:"";position:absolute;left:0;top:.7em;width:8px;height:8px;border-radius:50%;background:var(--gold)}
+.card.dont li::before{background:#C9A79E}
+.say{margin-top:20px;background:var(--cream);border-radius:14px;padding:18px 20px;font-family:var(--display);font-size:1.08rem;color:var(--navy);line-height:1.5}
+.say small{display:block;font-family:var(--sans);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-600);margin-bottom:6px;font-weight:600}
+.signs{margin-top:20px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.chip{background:var(--ice);color:var(--navy);font-size:.85rem;padding:8px 14px;border-radius:999px;font-weight:500}
+.caveat{font-size:.85rem;color:var(--muted);margin-top:16px;font-style:italic}
+@media (max-width:900px){.dodont,.signs{grid-template-columns:1fr}.principle-banner{flex-direction:column;align-items:flex-start;padding:28px}}
+
+/* flow */
+.flow{margin-top:20px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:32px}
+.steps{list-style:none;margin:20px 0 0;padding:0;display:grid;grid-template-columns:repeat(6,1fr);gap:12px;counter-reset:s}
+.steps li{position:relative;padding:20px 16px 18px;border-radius:14px;background:var(--paper);border:1px solid var(--line)}
+.steps li::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--navy);color:var(--gold);font-family:var(--display);font-size:1.1rem;margin-bottom:12px}
+.steps b{display:block;color:var(--navy);font-size:.92rem;margin-bottom:4px;line-height:1.35}
+.steps span{font-size:.82rem;color:var(--muted);line-height:1.5;display:block}
+@media (max-width:1020px){.steps{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:600px){.steps{grid-template-columns:1fr}.steps li{display:grid;grid-template-columns:auto 1fr;gap:0 14px}.steps li::before{grid-row:span 2;margin:0}}
+
+/* principles */
+.principles{background:var(--ice)}
+.plist{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.p-item{background:#fff;border-radius:var(--radius);padding:26px 24px;border-top:3px solid var(--navy)}
+.p-item:nth-child(even){border-top-color:var(--gold)}
+.p-item h3{font-family:var(--sans);font-weight:600;font-size:1rem;margin-bottom:8px;color:var(--navy);line-height:1.35}
+.p-item p{font-size:.88rem;color:var(--muted);margin:0}
+@media (max-width:1020px){.plist{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.plist{grid-template-columns:1fr}}
+
+/* pilot */
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;position:relative}
+.phase{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:28px 24px;position:relative}
+.phase .ph{font-size:.72rem;font-weight:600;letter-spacing:.18em;color:var(--gold-600);text-transform:uppercase}
+.phase h3{margin:8px 0 6px;font-size:1.4rem}
+.phase .wk{display:inline-block;background:var(--navy);color:#fff;font-size:.78rem;border-radius:999px;padding:4px 12px;margin-bottom:14px}
+.phase p{font-size:.9rem;color:var(--muted);margin:0}
+.bar{margin-top:26px;display:grid;grid-template-columns:4fr 3fr 8fr 5fr;gap:4px;height:12px;border-radius:999px;overflow:hidden}
+.bar i:nth-child(1){background:var(--steel)}.bar i:nth-child(2){background:var(--gold)}.bar i:nth-child(3){background:var(--navy)}.bar i:nth-child(4){background:var(--cream)}
+.bar-legend{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:8px}
+.pilot-facts{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.fact{flex:1 1 200px;background:var(--cream);border-radius:14px;padding:18px 20px}
+.fact b{font-family:var(--display);font-weight:400;font-size:1.8rem;color:var(--navy);display:block;line-height:1.1}
+.fact span{font-size:.85rem;color:#5B5340}
+@media (max-width:1020px){.timeline{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.timeline{grid-template-columns:1fr}}
+
+/* channels */
+.channels{background:linear-gradient(180deg,var(--navy) 0%,var(--navy-900) 100%);color:#fff;overflow:hidden}
+.channels h2,.channels h3{color:#fff}
+.channels .lead{color:#B9C9D9}
+.ch-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.ch{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);padding:28px 24px;display:flex;flex-direction:column;text-decoration:none;transition:background .2s,border-color .2s}
+a.ch:hover{background:rgba(255,255,255,.08);border-color:rgba(212,175,55,.5)}
+.ch.urgent{background:var(--gold);border-color:var(--gold);color:var(--navy-900)}
+.ch.urgent h3,.ch.urgent .num{color:var(--navy-900)}
+.ch .num{font-family:var(--display);font-size:2.8rem;line-height:1;color:var(--gold);margin-bottom:12px}
+.ch h3{font-family:var(--sans);font-weight:600;font-size:1.02rem;margin-bottom:8px}
+.ch p{font-size:.88rem;color:#C3D1DF;margin:0 0 14px}
+.ch.urgent p{color:#3D3416}
+.ch .go{margin-top:auto;font-size:.82rem;font-weight:600;color:var(--gold)}
+.ch.urgent .go{color:var(--navy)}
+.disclaimer{margin-top:28px;border:1px dashed rgba(212,175,55,.5);border-radius:var(--radius);padding:22px 26px;display:flex;gap:16px;color:#DCE5EE;font-size:.92rem}
+.disclaimer svg{flex:none;width:22px;height:22px;fill:var(--gold);margin-top:2px}
+.disclaimer p{margin:0}
+@media (max-width:1020px){.ch-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.ch-grid{grid-template-columns:1fr}}
+
+/* team */
+.team{background:var(--paper)}
+.people{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.person{text-align:center}
+.person .ph{position:relative;aspect-ratio:4/5;border-radius:22px;overflow:hidden;background:radial-gradient(circle at 50% 35%,#24557D 0%,var(--navy) 60%,var(--navy-900) 100%);margin-bottom:16px}
+.person .ph::before{content:"";position:absolute;left:50%;top:38%;width:130%;aspect-ratio:1;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg,rgba(212,175,55,.16) 0 4deg,transparent 4deg 18deg);-webkit-mask:radial-gradient(circle,#000 10%,transparent 62%);mask:radial-gradient(circle,#000 10%,transparent 62%)}
+.person img{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:94%;width:auto;max-width:none;object-fit:contain;object-position:bottom;transition:transform .35s}
+.person img.half{height:auto;width:100%}
+.person{min-width:0}
+.person:hover img{transform:translateX(-50%) scale(1.03)}
+.person h3{font-family:var(--sans);font-weight:600;font-size:1rem;color:var(--navy);line-height:1.35}
+.person span{font-size:.82rem;color:var(--muted)}
+.mentors{margin-top:40px;display:flex;flex-wrap:wrap;gap:16px;justify-content:center}
+.mentor{background:#fff;border:1px solid var(--line);border-radius:999px;padding:12px 24px;font-size:.9rem;color:var(--muted)}
+.mentor b{color:var(--navy);font-weight:600}
+@media (max-width:1020px){.people{grid-template-columns:repeat(3,1fr)}}
+@media (max-width:700px){.people{grid-template-columns:repeat(2,1fr);gap:16px}.person h3{font-size:.9rem}}
+
+/* cta */
+.cta-band{padding:0 0 110px;background:var(--paper)}
+.cta-box{background:var(--cream);border-radius:28px;padding:56px;display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center;position:relative;overflow:hidden}
+.cta-box h2{font-size:clamp(1.8rem,3.4vw,2.5rem);margin-bottom:14px}
+.cta-box p{color:#5B5340;margin:0}
+.cta-box .actions{display:flex;flex-direction:column;gap:12px;align-items:flex-start;position:relative;z-index:2}
+.cta-box .bg{position:absolute;right:-60px;bottom:-80px;width:340px;opacity:.12}
+@media (max-width:860px){.cta-box{grid-template-columns:1fr;padding:36px 26px}}
+
+/* footer */
+footer{background:var(--navy-900);color:#9FB3C8;padding:0 0 32px;position:relative}
+footer .wave-top{display:block;width:100%;height:80px;margin-top:-79px;position:relative}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;padding:40px 0 36px;border-bottom:1px solid rgba(255,255,255,.08)}
+.foot img{height:110px;width:auto;margin-bottom:18px}
+.foot h4{color:#fff;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;margin:0 0 16px;font-weight:600}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.9rem}
+.foot a{text-decoration:none;color:#C3D1DF}
+.foot a:hover{color:var(--gold)}
+.foot p{font-size:.9rem;max-width:42ch}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:.78rem;padding-top:24px;color:#7F96AE}
+@media (max-width:860px){.foot{grid-template-columns:1fr;gap:28px}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .beacon::before{animation:none}
+  .reveal{opacity:1;transform:none;transition:none}
+}
+@media (max-width:560px){section{padding:76px 0}.head{margin-bottom:36px}.wrap{padding:0 18px}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="star" viewBox="0 0 24 24"><path d="M12 0c.6 5.8 1.7 9.5 3.4 10.9 1.6 1.3 4.5 1.4 8.6 1.1-4.1-.3-7 .1-8.6 1.4C13.7 14.9 12.6 18.4 12 24c-.6-5.6-1.7-9.1-3.4-10.6C7 12.1 4.1 11.7 0 12c4.1.3 7 .2 8.6-1.1C10.3 9.5 11.4 5.8 12 0z"/></symbol>
+  <symbol id="swoosh" viewBox="0 0 140 14"><path d="M2 11C30 2 55 1 80 6s40 5 58-3" fill="none" stroke="#D4AF37" stroke-width="3" stroke-linecap="round"/></symbol>
+  <symbol id="check" viewBox="0 0 24 24"><path d="M9.5 16.2 5.3 12l-1.4 1.4 5.6 5.6L21 7.5l-1.4-1.4z" fill="currentColor"/></symbol>
+  <symbol id="x" viewBox="0 0 24 24"><path d="M18.3 5.7 12 12l6.3 6.3-1.4 1.4L10.6 13.4 4.3 19.7 2.9 18.3 9.2 12 2.9 5.7l1.4-1.4 6.3 6.3 6.3-6.3z" fill="currentColor"/></symbol>
+  <symbol id="info" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></symbol>
+  <symbol id="rays" viewBox="0 0 400 400"><g stroke="#F3E7CA" stroke-width="10" stroke-linecap="round" opacity=".9">
+    <line x1="200" y1="200" x2="200" y2="10"/><line x1="200" y1="200" x2="295" y2="35"/><line x1="200" y1="200" x2="365" y2="105"/><line x1="200" y1="200" x2="390" y2="200"/><line x1="200" y1="200" x2="365" y2="295"/><line x1="200" y1="200" x2="105" y2="35"/><line x1="200" y1="200" x2="35" y2="105"/><line x1="200" y1="200" x2="10" y2="200"/><line x1="200" y1="200" x2="35" y2="295"/></g></symbol>
+</svg>
+
+<div class="alert" role="note">
+  <strong>Em situação de perigo imediato?</strong> Ligue <a href="tel:190">190</a> (Polícia Militar). Para denunciar violações de direitos de crianças e adolescentes: <a href="tel:100">Disque 100</a>.
+</div>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="brand" href="#inicio" aria-label="FAROL — início">
+      <img src="assets/icon-white.svg" alt="">
+      <img class="word" src="assets/word-white.svg" alt="FAROL">
+    </a>
+    <button class="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    <ul class="menu" id="menu">
+      <li><a href="#projeto">O projeto</a></li>
+      <li><a href="#frentes">Frentes</a></li>
+      <li><a href="#orientacao">Orientação</a></li>
+      <li><a href="#piloto">Projeto-piloto</a></li>
+      <li><a href="#equipe">Equipe</a></li>
+      <li><a class="cta" href="#canais">Canais de ajuda</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+<!-- HERO -->
+<section class="hero on-dark" id="inicio">
+  <div class="stars" aria-hidden="true">
+    <span style="left:6%;top:14%"><svg><use href="#star"/></svg></span>
+    <span style="left:46%;top:9%;width:10px;height:10px;opacity:.6"><svg><use href="#star"/></svg></span>
+    <span style="left:92%;top:72%;width:10px;height:10px;opacity:.5"><svg><use href="#star"/></svg></span>
+    <span style="left:38%;top:80%;width:8px;height:8px;opacity:.4"><svg><use href="#star"/></svg></span>
+  </div>
+  <div class="wrap grid">
+    <div>
+      <span class="eyebrow"><svg><use href="#star"/></svg>Prevenção · Orientação · Proteção</span>
+      <h1>Informação que <em>ilumina</em> caminhos de proteção.</h1>
+      <p class="sub">O FAROL é uma iniciativa de prevenção, orientação e proteção de crianças e adolescentes diante de situações de violência sexual, aliciamento, exploração e tráfico de pessoas — nos ambientes físicos e digitais.</p>
+      <div class="actions">
+        <a class="btn btn-gold" href="#projeto">Conheça o projeto</a>
+        <a class="btn btn-ghost" href="#canais">Preciso de ajuda agora</a>
+      </div>
+      <div class="acronym" aria-label="Significado de FAROL">
+        <span><b>F</b>ortalecimento</span><span><b>A</b>colhimento</span><span><b>R</b>ede de</span><span><b>O</b>rientação e Proteção à</span><span><b>L</b>iberdade</span>
+      </div>
+    </div>
+    <div class="beacon" aria-hidden="true">
+      <svg class="rays" viewBox="0 0 400 400"><use href="#rays" opacity=".25"/></svg>
+      <img src="assets/icon-white.svg" alt="">
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 70C220 20 420 10 640 48s420 70 800-10V120H0z" fill="#FBF8F1"/>
+    <path d="M0 92C260 52 520 40 760 66s420 40 680-12" fill="none" stroke="#D4AF37" stroke-width="2.5" opacity=".9"/>
+  </svg>
+</section>
+
+<div class="strip">
+  <div class="wrap">
+    <span>Projeto de extensão do curso de <b>Direito · ESAMC Uberlândia</b></span>
+    <span>Uberlândia — MG · <b>2026</b></span>
+    <span>Frentes <b>FAROL ESCOLA</b> e <b>FAROL DIGITAL</b></span>
+  </div>
+</div>
+
+<!-- PROJETO -->
+<section id="projeto">
+  <div class="wrap about">
+    <div class="reveal">
+      <span class="eyebrow"><svg><use href="#star"/></svg>O projeto</span>
+      <h2>Transformar conhecimento em capacidade de proteger.</h2>
+      <svg class="swoosh" aria-hidden="true"><use href="#swoosh"/></svg>
+      <p class="quote">Assim como um farol não elimina os perigos do percurso, mas oferece referências para uma navegação mais segura, o projeto ilumina caminhos de prevenção e proteção.</p>
+      <p>Existe uma diferença importante entre estar próximo de uma possível situação de violência e saber como responder a ela com segurança. O FAROL nasce para reduzir essa distância: preparar profissionais e instituições que convivem com crianças e adolescentes para <strong>reconhecer situações de risco, acolher adequadamente e acionar a rede de proteção</strong> — sem assumir funções que pertencem aos órgãos especializados.</p>
+      <p>Concebido como iniciativa de finalidade social, com proposta de estruturação associativa sem fins lucrativos, o FAROL não cria um sistema paralelo de proteção: <strong>fortalece a rede que já existe</strong>.</p>
+    </div>
+    <div class="golden reveal">
+      <article>
+        <div class="tag">Por quê</div>
+        <h3>Nosso propósito</h3>
+        <p>Reduzir a distância entre a existência dos mecanismos de proteção e a capacidade de pessoas e instituições de utilizá-los de forma consciente e responsável.</p>
+      </article>
+      <article>
+        <div class="tag">Como</div>
+        <h3>Nossa metodologia</h3>
+        <p>Integrar conhecimentos jurídicos, educacionais, sociais e tecnológicos, transformando informação especializada em orientações acessíveis e aplicáveis a cada realidade institucional.</p>
+      </article>
+      <article>
+        <div class="tag">O quê</div>
+        <h3>O que oferecemos</h3>
+        <p>Capacitações para profissionais da educação, cartilhas e materiais informativos, atividades pedagógicas por faixa etária, conteúdos de segurança digital e divulgação dos canais oficiais de proteção.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CONCEITOS -->
+<section class="concepts" id="conceitos">
+  <div class="wrap">
+    <div class="head center reveal">
+      <span class="eyebrow"><svg><use href="#star"/></svg>Identidade</span>
+      <h2>Cinco conceitos, uma só direção.</h2>
+      <svg class="swoosh" aria-hidden="true"><use href="#swoosh"/></svg>
+      <p class="lead">O nome FAROL reúne as dimensões complementares que orientam uma atuação preventiva responsável.</p>
+    </div>
+    <div class="letters">
+      <article class="letter reveal"><span class="big">F</span><h3>Fortalecimento</h3><p>Desenvolvimento de conhecimentos e competências como base para a prevenção e para ambientes mais seguros.</p></article>
+      <article class="letter reveal"><span class="big">A</span><h3>Acolhimento</h3><p>Escuta qualificada, empatia e vínculos de confiança como ponto de partida para identificar situações de risco.</p></article>
+      <article class="letter reveal"><span class="big">R</span><h3>Rede</h3><p>Articulação entre pessoas, instituições e serviços para garantir caminhos seguros de encaminhamento e suporte.</p></article>
+      <article class="letter reveal"><span class="big">O</span><h3>Orientação</h3><p>Informação clara, segura e baseada em evidências para apoiar escolhas mais seguras no ambiente escolar e digital.</p></article>
+      <article class="letter reveal"><span class="big">L</span><h3>Liberdade</h3><p>Garantia do direito ao desenvolvimento, à dignidade e à proteção contra práticas que comprometam autonomia e futuro.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- CONTEXTO -->
+<section class="context on-dark" id="contexto">
+  <svg class="rays-bg" viewBox="0 0 400 400" aria-hidden="true"><use href="#rays"/></svg>
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow"><svg><use href="#star"/></svg>Por que importa</span>
+      <h2>Um desafio real, que exige preparo.</h2>
+      <p class="lead">Os dados mostram a dimensão do problema — e por que a prevenção depende de adultos e instituições preparados para reconhecer sinais e agir.</p>
+    </div>
+    <div class="stats">
+      <div class="stat reveal"><span class="num" data-count="164199">164.199</span><p>vítimas de estupro e estupro de vulnerável entre 0 e 19 anos no Brasil, de 2021 a 2023.</p><small>UNICEF; FBSP. Panorama da Violência Letal e Sexual contra Crianças e Adolescentes no Brasil, 2024.</small></div>
+      <div class="stat reveal"><span class="num">+343%</span><p>nas notificações de violência sexual (0 a 19 anos) entre 2014 e 2024: de 9.897 para 43.849 registros.</p><small>Ipea; FBSP. Atlas da Violência 2026 (Sinan/MS). Dados de 2024 preliminares.</small></div>
+      <div class="stat reveal"><span class="num">19%</span><p>dos usuários de internet de 12 a 17 anos sofreram alguma forma de exploração ou abuso sexual facilitado pela tecnologia em 12 meses.</p><small>UNICEF Innocenti; ECPAT; INTERPOL. Disrupting Harm in Brazil, 2026. Estimativa amostral.</small></div>
+      <div class="stat reveal"><span class="num" data-count="49336">49.336</span><p>denúncias anônimas de abuso e exploração sexual infantil na internet entre janeiro e julho de 2025 (+18,9%).</p><small>SaferNet Brasil, 2025. Refere-se a conteúdos denunciados, não a vítimas distintas.</small></div>
+    </div>
+    <p class="note reveal"><svg><use href="#info"/></svg><span>O aumento de registros não equivale, necessariamente, ao aumento real da violência: também reflete maior capacidade de notificação e conscientização. O FAROL trabalha esses dados sob uma perspectiva educativa — a prevenção não depende do medo, mas do acesso ao conhecimento.</span></p>
+  </div>
+</section>
+
+<!-- FRENTES -->
+<section id="frentes">
+  <div class="wrap">
+    <div class="head center reveal">
+      <span class="eyebrow"><svg><use href="#star"/></svg>Frentes de atuação</span>
+      <h2>Presencial e digital, de forma integrada.</h2>
+      <svg class="swoosh" aria-hidden="true"><use href="#swoosh"/></svg>
+      <p class="lead">As relações presenciais e virtuais não são realidades separadas. Por isso, o FAROL atua em duas frentes complementares, com uma identidade metodológica comum.</p>
+    </div>
+    <div class="fronts">
+      <article class="front escola reveal">
+        <img class="icon" src="assets/icon-navy.svg" alt="">
+        <span class="kicker">Frente presencial e institucional</span>
+        <h3>FAROL ESCOLA</h3>
+        <p>Capacitação de profissionais da educação e atividades preventivas no ambiente escolar — uma metodologia formativa estruturada, que vai além de palestras pontuais.</p>
+        <ul>
+          <li><svg><use href="#star"/></svg>Formação sobre direitos, processos de aliciamento e sinais que merecem atenção</li>
+          <li><svg><use href="#star"/></svg>Acolhimento de revelações espontâneas e prevenção da revitimização</li>
+          <li><svg><use href="#star"/></svg>Simulações pedagógicas com cenários fictícios cuidadosamente elaborados</li>
+          <li><svg><use href="#star"/></svg>Cartilhas e instrumentos de referência sobre a rede de proteção</li>
+          <li><svg><use href="#star"/></svg>Atividades adequadas à faixa etária e orientação a famílias</li>
+        </ul>
+      </article>
+      <article class="front digital on-dark reveal">
+        <img class="icon" src="assets/icon-white.svg" alt="">
+        <span class="kicker">Frente de educação e comunicação</span>
+        <h3>FAROL DIGITAL</h3>
+        <p>Conteúdos educativos sobre os riscos e cuidados nas redes sociais, jogos conectados, aplicativos de mensagens e ferramentas de inteligência artificial.</p>
+        <ul>
+          <li><svg><use href="#star"/></svg>Segurança digital e proteção de informações pessoais</li>
+          <li><svg><use href="#star"/></svg>Relações de confiança online, abordagens suspeitas, chantagem e coerção</li>
+          <li><svg><use href="#star"/></svg>Riscos de imagens manipuladas por IA (deepfakes)</li>
+          <li><svg><use href="#star"/></svg>Materiais para educadores, famílias e instituições</li>
+          <li><svg><use href="#star"/></svg>Site e Instagram com conteúdo revisado, referenciado e datado</li>
+        </ul>
+      </article>
+    </div>
+    <div class="tools">
+      <div class="tool reveal"><b>FAROL SINAL</b><p>Organiza categorias educativas para a leitura preventiva de situações, sem pontuação de risco nem rótulos sobre pessoas.</p></div>
+      <div class="tool reveal"><b>FAROL RESPONDE</b><p>Orienta o acolhimento, o registro estritamente necessário e o encaminhamento responsável.</p></div>
+      <div class="tool reveal"><b>FAROL REDE</b><p>Diretório de canais oficiais, com finalidade, abrangência e data de verificação de cada serviço.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ORIENTAÇÃO -->
+<section class="guide" id="orientacao" style="padding-top:0">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow"><svg><use href="#star"/></svg>Orientação</span>
+      <h2>Quando uma criança decide falar.</h2>
+      <svg class="swoosh" aria-hidden="true"><use href="#swoosh"/></svg>
+      <p class="lead">A forma como o adulto reage pode influenciar a segurança da criança, a continuidade da busca por ajuda e o risco de revitimização. Estas são referências gerais, que não substituem os protocolos da sua instituição.</p>
+    </div>
+
+    <div class="principle-banner reveal">
+      <div class="mark">Acolher não é<br>investigar.</div>
+      <p>A escola deve estar preparada para receber uma revelação espontânea, mas não deve conduzir entrevistas investigativas nem depoimentos — procedimentos que cabem à rede de proteção e às autoridades, conforme a Lei nº 13.431/2017.</p>
+    </div>
+
+    <div class="dodont">
+      <div class="card do reveal">
+        <h3><span class="ic"><svg width="18" height="18"><use href="#check"/></svg></span>O que fazer</h3>
+        <ul>
+          <li>Oferecer um ambiente seguro, reservado e acolhedor.</li>
+          <li>Ouvir sem julgamento e respeitar o ritmo da criança ou do adolescente.</li>
+          <li>Explicar que a informação será compartilhada apenas com quem precisa agir para protegê-la.</li>
+          <li>Registrar de forma objetiva, preservando as palavras usadas espontaneamente.</li>
+          <li>Comunicar sem demora ao Conselho Tutelar, à autoridade policial ou ao serviço de denúncias.</li>
+          <li>Em caso de violência sexual recente, facilitar o acesso urgente à rede de saúde.</li>
+        </ul>
+        <div class="say"><small>Uma forma de acolher</small>“Obrigado por confiar em mim. Você fez bem em procurar ajuda. Vou buscar as pessoas responsáveis pela sua proteção.”</div>
+      </div>
+      <div class="card dont reveal">
+        <h3><span class="ic"><svg width="18" height="18"><use href="#x"/></svg></span>O que evitar</h3>
+        <ul>
+          <li>Fazer perguntas sugestivas, repetitivas ou em busca de detalhes desnecessários.</li>
+          <li>Prometer sigilo absoluto — pode existir o dever legal de comunicar.</li>
+          <li>Confrontar o possível agressor ou promover mediação entre as partes.</li>
+          <li>Chamar automaticamente a família quando a suspeita envolver alguém do convívio familiar.</li>
+          <li>Pedir, baixar, copiar ou compartilhar imagens para “guardar provas”.</li>
+          <li>Expor a situação a colegas, grupos de mensagens ou redes sociais.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="signs">
+      <div class="card reveal">
+        <h3>Sinais que merecem atenção</h3>
+        <div class="chips">
+          <span class="chip">Isolamento repentino</span><span class="chip">Medo persistente de pessoas ou lugares</span><span class="chip">Faltas frequentes</span><span class="chip">Mudanças abruptas de comportamento</span><span class="chip">Sofrimento emocional intenso</span><span class="chip">Presentes e pedidos de segredo</span><span class="chip">Contatos persistentes de desconhecidos</span><span class="chip">Pressão para enviar imagens</span><span class="chip">Ofertas “vantajosas” em troca de intimidade</span><span class="chip">Ameaças e tentativas de isolamento</span>
+        </div>
+        <p class="caveat">Nenhum desses sinais, isoladamente, comprova violência. Eles indicam a necessidade de observação cuidadosa e de buscar orientação — sem transformar suspeitas em acusações.</p>
+      </div>
+      <div class="card reveal" style="background:var(--navy);border-color:var(--navy);color:#fff">
+        <h3 style="color:#fff">Diferenças que importam</h3>
+        <ul style="gap:16px">
+          <li style="color:#DCE5EE"><b style="color:var(--gold)">Revelação espontânea</b><br>Manifestação voluntária, que pode ocorrer diante de qualquer adulto de confiança.</li>
+          <li style="color:#DCE5EE"><b style="color:var(--gold)">Escuta especializada</b><br>Realizada na rede de proteção, por profissionais habilitados.</li>
+          <li style="color:#DCE5EE"><b style="color:var(--gold)">Depoimento especial</b><br>Oitiva perante autoridade policial ou judiciária, com finalidade probatória.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="flow reveal">
+      <h3>Fluxo de orientação e encaminhamento</h3>
+      <ol class="steps">
+        <li><b>Identificação</b><span>Suspeita fundamentada, relato espontâneo ou flagrante</span></li>
+        <li><b>Acolhimento imediato</b><span>Proteção, escuta não investigativa e avaliação de urgência</span></li>
+        <li><b>Comunicação responsável</b><span>Autoridades competentes e instâncias institucionais seguras</span></li>
+        <li><b>Registro protegido</b><span>Informações objetivas e necessárias, com acesso restrito</span></li>
+        <li><b>Encaminhamento à rede</b><span>Conselho Tutelar, autoridade policial, saúde e serviços pertinentes</span></li>
+        <li><b>Acompanhamento</b><span>Continuidade da proteção e do vínculo escolar</span></li>
+      </ol>
+      <p class="caveat">Fluxo ilustrativo, sujeito à validação com a escola e a rede territorial. Providências urgentes não devem ser retardadas pela sequência administrativa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCÍPIOS -->
+<section class="principles" id="principios">
+  <div class="wrap">
+    <div class="head center reveal">
+      <span class="eyebrow"><svg><use href="#star"/></svg>Princípios de atuação</span>
+      <h2>Seriedade com acolhimento.</h2>
+      <svg class="swoosh" aria-hidden="true"><use href="#swoosh"/></svg>
+    </div>
+    <div class="plist">
+      <div class="p-item reveal"><h3>Proteção integral e prioridade absoluta</h3><p>Crianças e adolescentes como sujeitos de direitos, com seu melhor interesse em todas as etapas.</p></div>
+      <div class="p-item reveal"><h3>Prevenção responsável</h3><p>Reconhecer riscos não é antecipar conclusões: evitamos estigmas e acusações infundadas.</p></div>
+      <div class="p-item reveal"><h3>Acolhimento e não revitimização</h3><p>Sem interrogatórios, repetição de relatos ou exposição de experiências pessoais.</p></div>
+      <div class="p-item reveal"><h3>Adequação pedagógica e etária</h3><p>Linguagem acessível, sem conteúdos inadequados à idade ou abordagens sensacionalistas.</p></div>
+      <div class="p-item reveal"><h3>Interdisciplinaridade</h3><p>Direito, Psicologia, Serviço Social, Educação e Saúde, cada um em sua competência.</p></div>
+      <div class="p-item reveal"><h3>Articulação institucional</h3><p>Atuação em colaboração com a rede existente, sem estruturas paralelas de investigação.</p></div>
+      <div class="p-item reveal"><h3>Privacidade e proteção de dados</h3><p>Minimização de dados como pressuposto, em conformidade com a LGPD.</p></div>
+      <div class="p-item reveal"><h3>Aperfeiçoamento baseado em evidências</h3><p>Avaliação metodológica, revisão técnica e análise crítica contínua dos resultados.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PILOTO -->
+<section id="piloto">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow"><svg><use href="#star"/></svg>Projeto-piloto</span>
+      <h2>Do planejamento à prática, com avaliação.</h2>
+      <svg class="swoosh" aria-hidden="true"><use href="#swoosh"/></svg>
+      <p class="lead">Antes de qualquer ampliação, a metodologia será aplicada experimentalmente, avaliada e aperfeiçoada. A continuidade será orientada pela qualidade e segurança — não apenas pela quantidade de instituições alcançadas.</p>
+    </div>
+    <div class="timeline">
+      <div class="phase reveal"><span class="ph">Fase I</span><h3>Pactuação e diagnóstico</h3><span class="wk">Semanas 1 a 4</span><p>Seleção, formalização, levantamento e matriz de necessidades da instituição.</p></div>
+      <div class="phase reveal"><span class="ph">Fase II</span><h3>Preparação</h3><span class="wk">Semanas 5 a 7</span><p>Plano de execução, organização dos materiais e definição de responsabilidades.</p></div>
+      <div class="phase reveal"><span class="ph">Fase III</span><h3>Implementação</h3><span class="wk">Semanas 8 a 15</span><p>Formação, atividades educativas e aplicação das ações digitais.</p></div>
+      <div class="phase reveal"><span class="ph">Fase IV</span><h3>Avaliação e revisão</h3><span class="wk">Semanas 16 a 20</span><p>Avaliação posterior, relatório, devolutiva e ajustes metodológicos.</p></div>
+    </div>
+    <div class="bar reveal" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <div class="bar-legend" aria-hidden="true"><span>Semana 1</span><span>Semana 20</span></div>
+    <div class="pilot-facts">
+      <div class="fact reveal"><b>20 semanas</b><span>de planejamento indicativo de execução</span></div>
+      <div class="fact reveal"><b>16 encontros</b><span>formativos de 1h30, em duas sessões semanais</span></div>
+      <div class="fact reveal"><b>24 horas</b><span>de capacitação para as equipes escolares</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CANAIS -->
+<section class="channels on-dark" id="canais">
+  <div class="wrap">
+    <div class="head reveal">
+      <span class="eyebrow"><svg><use href="#star"/></svg>Canais oficiais de proteção</span>
+      <h2>Onde buscar ajuda.</h2>
+      <p class="lead">Diferentes órgãos atuam conforme a natureza dos fatos e o território. Não há um canal único para todos os casos — estes são os principais caminhos.</p>
+    </div>
+    <div class="ch-grid">
+      <a class="ch urgent reveal" href="tel:190"><span class="num">190</span><h3>Polícia Militar</h3><p>Emergência, risco imediato à vida ou crime em andamento.</p><span class="go">Ligar agora →</span></a>
+      <a class="ch reveal" href="https://www.gov.br/mdh/pt-br/assuntos/denuncie-violacoes-de-direitos-humanos/disque-100" target="_blank" rel="noopener"><span class="num">100</span><h3>Disque Direitos Humanos</h3><p>Serviço público e gratuito, todos os dias, para denúncias de violações de direitos de crianças e adolescentes.</p><span class="go">Saiba mais →</span></a>
+      <div class="ch reveal"><span class="num" style="font-size:2rem;padding-top:.4rem">Conselho<br>Tutelar</span><h3>No seu município</h3><p>Deve ser procurado diante de ameaça ou violação de direitos de crianças e adolescentes.</p></div>
+      <a class="ch reveal" href="https://new.safernet.org.br/denuncie" target="_blank" rel="noopener"><span class="num" style="font-size:2rem;padding-top:.4rem">SaferNet<br>Brasil</span><h3>Denúncia de conteúdo online</h3><p>Central Nacional de Denúncias de crimes cibernéticos, incluindo abuso sexual infantil na internet.</p><span class="go">Denunciar →</span></a>
+    </div>
+    <div class="disclaimer reveal"><svg><use href="#info"/></svg><p><strong style="color:#fff">O FAROL é uma iniciativa educativa.</strong> Não recebe denúncias, não realiza atendimento de emergência e não substitui Conselho Tutelar, Ministério Público, polícia, serviços de saúde, assistência social ou profissionais especializados. Nunca envie relatos, imagens ou dados pessoais pelos nossos canais. A indicação de órgãos públicos não significa parceria formal ou endosso estatal.</p></div>
+  </div>
+</section>
+
+<!-- EQUIPE -->
+<section class="team" id="equipe">
+  <div class="wrap">
+    <div class="head center reveal">
+      <span class="eyebrow"><svg><use href="#star"/></svg>Equipe</span>
+      <h2>Sete trajetórias, um propósito.</h2>
+      <svg class="swoosh" aria-hidden="true"><use href="#swoosh"/></svg>
+      <p class="lead">Acadêmicos do 9º semestre de Direito da ESAMC Uberlândia, unindo conhecimento jurídico e compromisso social para transformar conhecimento em orientação, prevenção e proteção.</p>
+    </div>
+    <div class="people">
+      <div class="person reveal"><div class="ph"><img src="assets/equipe/ana-carolina.webp" alt="Ana Carolina de Jesus Correia" loading="lazy"></div><h3>Ana Carolina de Jesus Correia</h3><span>Direito · ESAMC</span></div>
+      <div class="person reveal"><div class="ph"><img src="assets/equipe/ana-laura.webp" alt="Ana Laura Morais de Oliveira Soares" loading="lazy"></div><h3>Ana Laura Morais de Oliveira Soares</h3><span>Direito · ESAMC</span></div>
+      <div class="person reveal"><div class="ph"><img src="assets/equipe/beatriz.webp" alt="Beatriz Barroso Marques Pereira" loading="lazy"></div><h3>Beatriz Barroso Marques Pereira</h3><span>Direito · ESAMC</span></div>
+      <div class="person reveal"><div class="ph"><img src="assets/equipe/bruna.webp" alt="Bruna Alves Araújo" loading="lazy"></div><h3>Bruna Alves Araújo</h3><span>Direito · ESAMC</span></div>
+      <div class="person reveal"><div class="ph"><img src="assets/equipe/emanuelly.webp" alt="Emanuelly Martins Oliveira" loading="lazy"></div><h3>Emanuelly Martins Oliveira</h3><span>Direito · ESAMC</span></div>
+      <div class="person reveal"><div class="ph"><img src="assets/equipe/rafaela.webp" alt="Rafaela Rezende Novais Franco" loading="lazy"></div><h3>Rafaela Rezende Novais Franco</h3><span>Direito · ESAMC</span></div>
+      <div class="person reveal"><div class="ph"><img src="assets/equipe/rafael.webp" alt="Rafael Ramos Pereira" loading="lazy"></div><h3>Rafael Ramos Pereira</h3><span>Direito · ESAMC</span></div>
+      <div class="person reveal" style="display:flex;flex-direction:column;justify-content:center;align-items:center;background:var(--navy);border-radius:22px;padding:28px;aspect-ratio:4/5;color:#fff">
+        <img src="assets/logo-white.svg" alt="FAROL" style="position:static;transform:none;height:auto;width:70%;margin-bottom:18px">
+        <span style="color:#C9D6E3;font-size:.85rem;line-height:1.5">Transformar conhecimento em orientação, prevenção e proteção.</span>
+      </div>
+    </div>
+    <div class="mentors reveal">
+      <div class="mentor">Orientador: <b>Vinícius César Félix</b></div>
+      <div class="mentor">Coorientadora: <b>Maria Eugênia Lemes Gondin de Lima</b></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <img class="bg" src="assets/icon-navy.svg" alt="">
+      <div>
+        <span class="eyebrow"><svg><use href="#star"/></svg>Parcerias</span>
+        <h2>Sua instituição quer caminhar com o FAROL?</h2>
+        <p>Escolas, redes de ensino e organizações interessadas no projeto-piloto, em capacitações ou em cooperação institucional podem conversar com a equipe.</p>
+      </div>
+      <div class="actions">
+        <a class="btn btn-navy" id="contact-btn" href="#equipe">Fale com a equipe</a>
+        <a class="btn" style="color:var(--navy);padding-left:4px" href="#frentes">Ver frentes de atuação →</a>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+
+<footer>
+  <svg class="wave-top" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0 50C300 0 560 0 820 30s400 40 620 0V80H0z" fill="#0B2238"/></svg>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <img src="assets/logo-white.svg" alt="FAROL">
+        <p>Fortalecimento, Acolhimento e Rede de Orientação e Proteção à Liberdade de Crianças e Adolescentes.</p>
+      </div>
+      <div>
+        <h4>Navegue</h4>
+        <ul>
+          <li><a href="#projeto">O projeto</a></li>
+          <li><a href="#conceitos">Conceitos</a></li>
+          <li><a href="#frentes">FAROL ESCOLA e DIGITAL</a></li>
+          <li><a href="#orientacao">Orientação</a></li>
+          <li><a href="#piloto">Projeto-piloto</a></li>
+          <li><a href="#equipe">Equipe</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Precisa de ajuda?</h4>
+        <ul>
+          <li><a href="tel:190">190 — Emergência</a></li>
+          <li><a href="tel:100">Disque 100 — Direitos Humanos</a></li>
+          <li><a href="#canais">Conselho Tutelar e outros canais</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Projeto FAROL · Projeto de graduação extensionista — Direito, ESAMC Uberlândia (MG)</span>
+      <span>Conteúdo educativo. Não substitui os órgãos da rede de proteção.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Para exibir um e-mail de contato no botão "Fale com a equipe", preencha abaixo:
+const CONTATO_EMAIL = ""; // ex.: "contato@projetofarol.org.br"
+
+(function(){
+  const b=document.body, burger=document.querySelector('.burger');
+  burger.addEventListener('click',()=>{const o=b.classList.toggle('open');burger.setAttribute('aria-expanded',o);burger.setAttribute('aria-label',o?'Fechar menu':'Abrir menu');});
+  document.querySelectorAll('.menu a').forEach(a=>a.addEventListener('click',()=>{b.classList.remove('open');burger.setAttribute('aria-expanded',false);}));
+
+  if(CONTATO_EMAIL){const c=document.getElementById('contact-btn');c.href='mailto:'+CONTATO_EMAIL;c.textContent='Escreva para a equipe';}
+
+  const els=document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+    els.forEach((el,i)=>{el.style.transitionDelay=(i%5)*60+'ms';io.observe(el);});
+  } else els.forEach(el=>el.classList.add('in'));
+
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fmt=n=>n.toLocaleString('pt-BR');
+  const cio=new IntersectionObserver(es=>es.forEach(e=>{
+    if(!e.isIntersecting)return; const el=e.target, end=+el.dataset.count; cio.unobserve(el);
+    if(reduce){el.textContent=fmt(end);return;}
+    const t0=performance.now(), d=1400;
+    const step=t=>{const p=Math.max(0,Math.min(1,(t-t0)/d)), v=Math.round(end*(1-Math.pow(1-p,3))); el.textContent=fmt(v); if(p<1)requestAnimationFrame(step);};
+    requestAnimationFrame(step);
+  }),{threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(el=>cio.observe(el));
+})();
+</script>
+</body>
+</html>
